@@ -1,11 +1,38 @@
+
+
+
+
 let gameSeq=[];
 let userSeq=[];
 let level=0;
 let started=false;
+let gameButton=false;
+
 let h2=document.querySelector("h2");
 let btns=["red","orange","lime","purple"];
-document.addEventListener("keypress",function()
-{
+// let button=document.getElementById("startButton");
+// button.addEventListener("click", startGame);
+document.addEventListener("DOMContentLoaded", function() {
+    // Check if the device supports touch events
+    var isTouchDevice = 'ontouchstart' in document.documentElement;
+
+    // Add event listener based on device type
+    if (isTouchDevice) {
+        // For touch devices (mobile)
+        document.addEventListener("touchstart", startGame);
+    } else {
+        // For desktop devices
+        document.addEventListener("keypress", startGame);
+    }
+});
+function startGame() {
+    // Hide the start message
+    gameButton=true;
+    if(gameButton)
+    {
+        document.getElementById("startButton").style.display = "none";
+    }
+    
     if(started==false)
     {
         console.log("Game Started!");
@@ -13,10 +40,22 @@ document.addEventListener("keypress",function()
     }
     levelUp();
    
-});
+    
+}
+
+// document.addEventListener("keypress",function()//game started after any key pressed on document
+// {
+//     if(started==false)
+//     {
+//         console.log("Game Started!");
+//         started=true;
+//     }
+//     levelUp();
+   
+// });
 function btnflash(btn)
 {
-   btn.classList.add("flash");
+   btn.classList.add("flash");//flash class 250 mili second ke liye add hogi
    setTimeout(function()
    {
     btn.classList.remove("flash");
@@ -44,7 +83,7 @@ function levelUp()
     // console.log(randIdx);
     // console.log(randbtn);
     gameSeq.push(randColor);
-    console.log(gameSeq);
+    // console.log(gameSeq);
     btnflash(randbtn);
 
 }
@@ -68,7 +107,9 @@ function checkAns(idx)
         {
             col.style.backgroundColor="white";
         },100);
+        gameButton=false;
         reset();
+        
     }
 }
 function btnpress()
@@ -83,7 +124,7 @@ function btnpress()
     checkAns(userSeq.length-1);
 }
 let allbtn=document.querySelectorAll(".btn");
-for(btn of allbtn)
+for(btn of allbtn)//for adding btnpress event on all four btns
 {
     btn.addEventListener("click",btnpress);
 }
